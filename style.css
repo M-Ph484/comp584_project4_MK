@@ -1,13 +1,228 @@
 html {
-    box-sizing: border-box;
+  /*
+    border-box makes width and height calculations easier to control because
+    padding and borders are included inside the final size.
+
+    For a calculator layout with exact button proportions, this is helpful
+    because it prevents borders from unexpectedly enlarging the cells.
+  */
+  box-sizing: border-box;
 }
-*, *:before, *:after {
-    box-sizing: inherit;
+
+*,
+*:before,
+*:after {
+  /*
+    Inherit border-box everywhere so all elements use the same sizing model.
+    This is for layout reset and keeps button dimensions consistent
+  */
+  box-sizing: inherit;
 }
+
 body {
-  padding: 0;
+  /*
+    Remove browser default spacing so the calculator can align flush to the page,
+    which matches the screenshot more closely.
+
+    White background so it's the same as the image
+  */
   margin: 0;
+  padding: 0;
+  background: #ffffff;
+  font-family: Arial, Helvetica, sans-serif;
 }
+
 .wrapper {
-    width: 400px;
+  /*
+    Wrapper width was provided already
+    This defines the overall calculator width and controls the scale of the UI.
+  */
+  width: 400px;
+}
+
+.calculator-screen {
+  /*
+    This is the black display area at the top of the calculator.
+
+    min-height:
+    Keeps the screen tall enough to visually match the screenshot.
+
+    display: flex:
+    Flexbox was picked because this area only needs one-dimensional alignment.
+    The displayed number is aligned to the right side of the screen
+
+    justify-content: flex-end:
+    Pushes content horizontally to the right.
+
+    align-items: flex-start:
+    Keeps the display text positioned near the top area instead of centered.
+
+    padding:
+    Creates spacing around the text so it does not touch the edges.
+  */
+  min-height: 86px;
+  background: #000000;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-start;
+  padding: 12px 10px 8px;
+}
+
+.calculator-display {
+  /*
+    width: 100% lets the text occupy the full line so text-align:right works
+    across the full width of the display.
+
+    margin: 0 removes the browser's default paragraph spacing.
+
+    font-size, font-weight, and line-height were tuned to better match the
+    screenshot proportions.
+
+    overflow and text-overflow help prevent display text from visually breaking
+    the calculator layout if the result becomes long.
+  */
+  width: 100%;
+  margin: 0;
+  color: #ffffff;
+  text-align: right;
+  font-size: 3rem;
+  font-weight: 300;
+  line-height: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.calculator-buttons {
+  /*
+    This is the container for all keypad rows.
+
+    display: flex with flex-direction: column stacks each .button-row
+    vertically. flexbox was chosen here because the calculator naturally breaks
+    into a column of horizontal rows.
+
+    - the overall structure is row-based
+    - each row can then become its own flex container
+    - special-width buttons like C and 0 are easy to size with flex values
+  */
+  display: flex;
+  flex-direction: column;
+}
+
+.button-row {
+  /*
+    Each button row is a separate flex container laid out horizontally.
+
+    This allows buttons to be placed side-by-side and control their widths using flex.
+    It's treating the example screenshot as a stack of five horizontal strips
+  */
+  display: flex;
+}
+
+.calc-button {
+  /*
+    Base button styling used by every calculator button.
+
+    flex: 1 1 25%
+    Means each default button starts as one quarter of the row width, which
+    creates the standard 4-button row shape seen in the screenshot.
+
+    height:
+    Gives all buttons consistent row height.
+
+    border settings:
+    Create the visible grid lines between cells.
+    border-top and border-left are removed so borders do not double up where
+    buttons touch each other.
+
+    font properties:
+    Size the labels so the keypad resembles the reference image.
+
+    transition:
+    Makes hover and active states feel smoother and more intentional
+  */
+  flex: 1 1 25%;
+  height: 82px;
+  border: 1px solid #1f1f1f;
+  border-top: 0;
+  border-left: 0;
+  background: #d1d3d4;
+  color: #000000;
+  font-size: 2.45rem;
+  font-weight: 400;
+  cursor: pointer;
+  transition: filter 0.15s ease, transform 0.05s ease;
+}
+
+.button-row .calc-button:last-child {
+  /*
+    Removes the far-right outer border so the edge matches the screenshot more
+    cleanly and avoids a doubled heavy border line.
+  */
+  border-right: 0;
+}
+
+.utility,
+.number {
+  /*
+    Utility buttons (C, backspace) and number buttons share the same light gray
+    background in the screenshot, so they are grouped here.
+  */
+  background: #d1d3d4;
+}
+
+.operator {
+  /*
+    The operator column is orange in the screenshot, so those buttons receive
+    a separate class.
+
+    White text and heavier font weight improve contrast and match the visual
+    emphasis of the reference design.
+  */
+  background: #d7964a;
+  color: #ffffff;
+  font-weight: 700;
+}
+
+.wide-2 {
+  /*
+    Used by C so it spans two normal button widths.
+    flex-basis of 50% gives it half the row.
+  */
+  flex: 0 0 50%;
+}
+
+.wide-3 {
+  /*
+    Used by 0 so it spans three normal button widths.
+    flex-basis of 75% matches the screenshot's bottom row layout.
+  */
+  flex: 0 0 75%;
+}
+
+.calc-button:hover {
+  /*
+    Hover state gives visible feedback when the pointer moves over a button
+  */
+  filter: brightness(1.05);
+}
+
+.calc-button:active {
+  /*
+    Active state shows a pressed interaction.
+
+    Slight darkening plus a very small scale change helps the click feel more
+    physical, similar to pressing a real calculator key.
+  */
+  filter: brightness(0.92);
+  transform: scale(0.99);
+}
+
+.calc-button:focus-visible {
+  /*
+    Keyboard-accessible focus indicator.
+    This improves usability for non-mouse users and makes the active button
+    easier to identify while tabbing.
+  */
+  outline: 3px solid #2d6cdf;
+  outline-offset: -3px;
 }

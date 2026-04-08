@@ -1,25 +1,104 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Calculator App</title>
-    
-    <!-- import the webpage's stylesheet -->
-    <link rel="stylesheet" href="/style.css">
- 
-  </head>  
-  <body>
-    <div class="wrapper">
-        <section class="calculator-screen">
 
-        </section>
     
-        <section class="calculator-buttons">
- 
-        </section>
+    <link rel="stylesheet" href="style.css" />
+    <script src="script.js" defer></script>
+  </head>
+  <body>
+    
+    <div class="wrapper">
+
+      <!--
+        The display is separated into its own section to make the structure cleaner and also help the
+        JavaScript logic, because the calculator output area is isolated from
+        the button area
+
+        aria-label improves accessibility by giving assistive technologies a
+        clear description of what this section represents
+      -->
+      <section class="calculator-screen" aria-label="Calculator display">
+        <!--
+          A paragraph element is used to hold the current display value.
+          JavaScript updates this text whenever the user presses numbers,
+          operators, backspace, clear, or equals.
+
+          The initial value is 0 so the calculator starts in a standard,
+          predictable state.
+        -->
+        <p class="calculator-display">0</p>
+      </section>
+
+      <!--
+        The keypad is also separated into its own section to make
+         event handling easier in JavaScript because all button clicks
+        can be managed from one parent area
+      -->
+      <section class="calculator-buttons" aria-label="Calculator buttons">
+
+        <!--
+          Each horizontal strip of calculator buttons is grouped into a .button-row.
+          The visual reference is strongly row-based, and flexbox is especially effective 
+          for laying out one row at a time.
+
+          The first row includes:
+          - clear
+          - backspace
+          - divide
+
+          The C button spans two button widths, which is why it gets wide-2.
+        -->
+        <div class="button-row">
+          <button class="calc-button utility wide-2" type="button" data-action="clear">C</button>
+          <button class="calc-button utility" type="button" data-action="backspace">←</button>
+          <button class="calc-button operator" type="button" data-action="operator" data-value="divide">÷</button>
+        </div>
+
+        <!--
+          Rows 2 through 4 follow the classic calculator arrangement:
+          three number buttons on the left and one operator on the right.
+
+          data-action tells JavaScript what category of behavior the button has.
+          data-value provides the exact value or operator name to process.
+        -->
+        <div class="button-row">
+          <button class="calc-button number" type="button" data-action="number" data-value="7">7</button>
+          <button class="calc-button number" type="button" data-action="number" data-value="8">8</button>
+          <button class="calc-button number" type="button" data-action="number" data-value="9">9</button>
+          <button class="calc-button operator" type="button" data-action="operator" data-value="multiply">×</button>
+        </div>
+
+        <div class="button-row">
+          <button class="calc-button number" type="button" data-action="number" data-value="4">4</button>
+          <button class="calc-button number" type="button" data-action="number" data-value="5">5</button>
+          <button class="calc-button number" type="button" data-action="number" data-value="6">6</button>
+          <button class="calc-button operator" type="button" data-action="operator" data-value="subtract">-</button>
+        </div>
+
+        <div class="button-row">
+          <button class="calc-button number" type="button" data-action="number" data-value="1">1</button>
+          <button class="calc-button number" type="button" data-action="number" data-value="2">2</button>
+          <button class="calc-button number" type="button" data-action="number" data-value="3">3</button>
+          <button class="calc-button operator" type="button" data-action="operator" data-value="add">+</button>
+        </div>
+
+        <!--
+          Final row:
+          - 0 spans three button widths to match the screenshot
+          - = stays in the orange operator column
+
+          wide-3 is the class that makes 0 occupy 75% of the row width.
+        -->
+        <div class="button-row">
+          <button class="calc-button number wide-3" type="button" data-action="number" data-value="0">0</button>
+          <button class="calc-button operator" type="button" data-action="equals">=</button>
+        </div>
+      </section>
     </div>
   </body>
 </html>
